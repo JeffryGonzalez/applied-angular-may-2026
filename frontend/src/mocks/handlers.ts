@@ -2,9 +2,10 @@ import { HttpHandler } from 'msw';
 
 import resourcesHandler from './resources/resources';
 import booksHandler from './books/books';
+import newsHandler from './news/news';
 import bypassed from './bypassed-endpoints';
 
-const all: HttpHandler[] = [...resourcesHandler, ...booksHandler];
+const all: HttpHandler[] = [...resourcesHandler, ...booksHandler, ...newsHandler];
 
 export const handlers: HttpHandler[] = all.filter((h) => {
   const { method, path } = h.info;
