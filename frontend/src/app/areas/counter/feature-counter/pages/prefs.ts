@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PageHeader } from '../../../shared/ui-page-header/page-header';
 import { counterStore } from '../../data-counter/store';
 
