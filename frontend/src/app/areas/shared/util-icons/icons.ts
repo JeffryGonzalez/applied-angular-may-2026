@@ -1,3 +1,4 @@
+import { solarAddSquareBold } from '@ng-icons/solar-icons/bold';
 import {
   solarBell,
   solarBook,
@@ -36,6 +37,7 @@ export const icons = {
   solarStopwatch,
   solarHistory,
   solarTestTube,
+  solarAddSquareBold,
 } as const;
 
 export type IconName = keyof typeof icons;

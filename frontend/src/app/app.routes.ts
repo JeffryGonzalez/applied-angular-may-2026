@@ -25,6 +25,12 @@ export const routes: AppRoute[] = [
       import('./areas/resources/feature-home/resources.routes').then((m) => m.resourcesRoutes),
   },
   {
+    path: 'counter',
+    data: { nav: { label: 'Counter', icon: 'solarAddSquareBold' } },
+    loadChildren: () =>
+      import('./areas/counter/feature-counter/counter.routes').then((c) => c.CounterRoutes),
+  },
+  {
     path: '**',
     redirectTo: 'home',
   },
