@@ -4,6 +4,7 @@ import { OverviewPage } from './pages/overview';
 import { LinkedPage } from './pages/ls';
 import { LifecyclePage } from './pages/pib';
 import { LifechildPage } from './pages/life-child';
+import { CounterPage } from './pages/counter';
 
 export const demoRoutes: Routes = [
   {
@@ -26,6 +27,11 @@ export const demoRoutes: Routes = [
         component: LifecyclePage,
         data: { nav: { label: 'LifeCycle' } },
         children: [{ path: ':id', component: LifechildPage }],
+      },
+      {
+        path: 'counter',
+        component: CounterPage,
+        data: { nav: { label: 'Counter With Service' } },
       },
     ],
   },

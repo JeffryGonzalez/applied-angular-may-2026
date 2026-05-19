@@ -2,6 +2,7 @@ import { signalStore, withComputed, withState } from '@ngrx/signals';
 import { on, withReducer } from '@ngrx/signals/events';
 import { authActions } from './actions';
 import { computed } from '@angular/core';
+import { withLogging } from '../util-logging/store-logging-feature';
 
 type AuthState =
   | { kind: 'authenticated'; user: { name: string; email: string } }
@@ -9,6 +10,7 @@ type AuthState =
 
 export const authStore = signalStore(
   withState<AuthState>({ kind: 'unauthenticated' }),
+  withLogging('auth'),
   withReducer(
     on(authActions.login, () => ({
       kind: 'authenticated',

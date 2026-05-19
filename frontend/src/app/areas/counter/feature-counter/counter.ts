@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DOCUMENT, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AreaNav } from '../../shared/ui-area-nav/area-nav';
-import { FizzBuzz } from '../ui-counter/fizz-buzz';
 
 @Component({
   selector: 'app-counter',
@@ -14,12 +13,15 @@ import { FizzBuzz } from '../ui-counter/fizz-buzz';
       </div>
     </header>
     <section class="bg-base-100 border border-base-300 rounded-box p-6 shadow-sm">
-      <app-counter-fizzbuzz />
-
       <router-outlet />
     </section>
   `,
   styles: ``,
-  imports: [RouterOutlet, AreaNav, FizzBuzz],
+  imports: [RouterOutlet, AreaNav],
 })
-export class Counter {}
+export class Counter {
+  doc = inject(DOCUMENT);
+  constructor() {
+    console.log(this.doc.querySelectorAll('a'));
+  }
+}

@@ -1,9 +1,16 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import {
+  PreloadAllModules,
   provideRouter,
   withComponentInputBinding,
   withExperimentalAutoCleanupInjectors,
+  withPreloading,
 } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
 
@@ -16,7 +23,12 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(),
-    provideRouter(routes, withExperimentalAutoCleanupInjectors(), withComponentInputBinding()),
+    provideRouter(
+      routes,
+      withExperimentalAutoCleanupInjectors(),
+      withComponentInputBinding(),
+      withPreloading(PreloadAllModules),
+    ),
     provideIcons(icons),
     authStore,
     provideSignalFormsConfig({

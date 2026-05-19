@@ -1,9 +1,10 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { counterStore } from '../data-counter/store';
 
 @Component({
   selector: 'app-counter-fizzbuzz',
   imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div>
       @switch (fizzBuzz()) {
@@ -17,7 +18,7 @@ import { counterStore } from '../data-counter/store';
           <p class="alert alert-error">Buzzing!</p>
         }
         @case (undefined) {
-          <p>Just not fizzing or buzzing here. Keep Going</p>
+          <p>Just not fizzing or buzzing here. Keep Going!!</p>
         }
       }
     </div>

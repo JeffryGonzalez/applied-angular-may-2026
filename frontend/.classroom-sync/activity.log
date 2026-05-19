@@ -378,3 +378,25 @@
 [12:24:08] 172.18.0.13      SYNC FILE   tsconfig.app.json
 [12:24:08] 172.18.0.13      SYNC FILE   tsconfig.json
 [12:24:08] 172.18.0.13      SYNC FILE   tsconfig.spec.json
+[12:25:39] 172.18.0.12      SYNC DIR    src
+[12:26:00] 172.18.0.18      SYNC DIR    src
+[13:35:56] 172.18.0.14      SYNC DIR    notes
+[13:36:01] 172.18.0.14      SYNC DIR    src
+[13:49:37] 172.18.0.16      MANIFEST    (browsing file list)
+[13:49:58] 172.18.0.16      SYNC FILE   notes/pieces.excalidraw
+[13:49:58] 172.18.0.16      SYNC FILE   .classroom-sync/activity.log
+[14:15:39] 172.18.0.13      SYNC DIR    .claude
+[14:15:57] 172.18.0.13      SYNC DIR    .claude
+[14:16:02] 172.18.0.13      SYNC DIR    src
+[14:50:02] 172.18.0.19      SYNC DIR    notes
+[15:57:55] 172.18.0.13      SYNC DIR    docs-src
+[15:58:11] 172.18.0.13      SYNC DIR    docs-src
+[15:58:14] 172.18.0.13      SYNC DIR    notes
+[15:58:18] 172.18.0.13      SYNC DIR    public
+[15:58:20] 172.18.0.13      SYNC DIR    scripts
+[15:58:22] 172.18.0.13      SYNC DIR    src
+[15:58:29] 172.18.0.13      SYNC FILE   tsconfig.spec.json
+[16:09:47] 172.18.0.13      SYNC FILE   src/app/areas/counter/feature-counter/pages/overview.ts
+[16:10:22] 172.18.0.13      SYNC DIR    src/app/areas/demos/feature-demos/pages
+[16:10:45] 172.18.0.13      SYNC DIR    src/app/areas/demos/feature-demos
+[16:10:51] 172.18.0.13      SYNC DIR    src/app/areas/demos
