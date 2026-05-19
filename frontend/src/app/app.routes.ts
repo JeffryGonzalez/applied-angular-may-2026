@@ -37,6 +37,12 @@ export const routes: AppRoute[] = [
       import('./areas/demos/feature-demos/demos.routes').then((d) => d.demoRoutes),
   },
   {
+    path: 'pomodoro',
+    data: { nav: { label: 'Pomodoro', icon: 'solarBell' } },
+    loadChildren: () =>
+      import('./areas/jeff-pomodoro/feature-home/pomodoro.routes').then((r) => r.pomodoroRoutes),
+  },
+  {
     path: '**',
     redirectTo: 'home',
   },

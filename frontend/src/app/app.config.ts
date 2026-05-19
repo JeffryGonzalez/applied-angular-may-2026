@@ -1,6 +1,10 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
-import { provideRouter, withExperimentalAutoCleanupInjectors } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withExperimentalAutoCleanupInjectors,
+} from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
 
 import { routes } from './app.routes';
@@ -12,7 +16,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(),
-    provideRouter(routes, withExperimentalAutoCleanupInjectors()),
+    provideRouter(routes, withExperimentalAutoCleanupInjectors(), withComponentInputBinding()),
     provideIcons(icons),
     authStore,
     provideSignalFormsConfig({

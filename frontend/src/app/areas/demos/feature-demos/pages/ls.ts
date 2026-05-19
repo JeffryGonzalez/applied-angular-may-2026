@@ -53,15 +53,20 @@ export class LinkedPage {
     { name: 'Water', price: 1.98, taxable: false },
   ]);
 
+  // setSelected(product:Product) {
+  //   this.selected.set(product);
+  //   this.qty.set(0);
+  // }
   selected = signal<Product | null>(null);
 
-  qty = signal(1);
-  //   qty = linkedSignal({
-  //     source: this.selected,
-  //     computation: () => 1,
-  //   });
+  //qty = signal(1);
+  qty = linkedSignal({
+    source: this.selected,
+    computation: () => 1,
+  });
 
   summary = computed(() => {
+    // this will recompute when either selected or qty change.
     const selected = this.selected();
     const qty = this.qty();
     if (selected !== null) {

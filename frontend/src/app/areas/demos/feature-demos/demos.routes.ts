@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { Demos } from './demos';
 import { OverviewPage } from './pages/overview';
 import { LinkedPage } from './pages/ls';
+import { LifecyclePage } from './pages/pib';
+import { LifechildPage } from './pages/life-child';
 
 export const demoRoutes: Routes = [
   {
@@ -18,6 +20,12 @@ export const demoRoutes: Routes = [
         path: 'ls',
         component: LinkedPage,
         data: { nav: { label: 'Linked Signals' } },
+      },
+      {
+        path: 'life',
+        component: LifecyclePage,
+        data: { nav: { label: 'LifeCycle' } },
+        children: [{ path: ':id', component: LifechildPage }],
       },
     ],
   },
