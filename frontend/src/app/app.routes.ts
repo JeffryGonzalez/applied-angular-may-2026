@@ -9,6 +9,18 @@ export type AppRoute = Route & { data?: AppNavData };
 
 export const routes: AppRoute[] = [
   {
+    path: 'catalog',
+    data: { nav: { label: 'Catalog', icon: 'solarFolder' } },
+    loadChildren: () =>
+      import('./areas/catalog/feature-catalog/catalog.routes').then((c) => c.CatalogRoutes),
+  },
+  {
+    path: 'admin',
+    data: { nav: { label: 'Software Admin', icon: 'solarSettings' } },
+    loadChildren: () =>
+      import('./areas/catalog/feature-admin/admin.routes').then((a) => a.softwareAdminRoutes),
+  },
+  {
     path: 'home',
     data: { nav: { label: 'Home', icon: 'solarHome' } },
     loadChildren: () => import('./areas/home/feature-home/home.routes').then((m) => m.homeRoutes),
@@ -42,8 +54,9 @@ export const routes: AppRoute[] = [
     loadChildren: () =>
       import('./areas/jeff-pomodoro/feature-home/pomodoro.routes').then((r) => r.pomodoroRoutes),
   },
+
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: 'catalog',
   },
 ];

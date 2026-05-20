@@ -1,5 +1,5 @@
 # msw-lens — project context
-generated: 2026-05-18T16:37:54.665Z
+generated: 2026-05-20T16:05:13.751Z
 
 > Drop this file into any LLM conversation for instant context about what
 > is mocked in this project, what scenarios exist, and what is currently active.
@@ -11,6 +11,7 @@ generated: 2026-05-18T16:37:54.665Z
 | `/api/resources` | GET | `slow` |
 | `/api/resources` | POST | `success` |
 | `https://news.hypertheory.com/angular` | GET | `many-items` |
+| `/api/catalog` | GET | `typical` |
 | `/api/books` | GET | `typical` |
 
 ## Scenario details
@@ -62,6 +63,21 @@ sourceHints:
 - `src/app/areas/home/feature-home/pages/news.ts`
 - `src/app/areas/home/feature-home/ui/news-list.ts`
 - `src/app/areas/home/feature-home/data/types.ts`
+
+### GET `/api/catalog`
+manifest: `src\mocks\catalog\catalog.yaml`
+> Returns the list of approved software items displayed on the Catalog overview page
+
+- **typical** ✓ **(active)** — Shows several approved software items — the normal production-like view with titles and vendors
+- **empty** — Tests the @empty fallback row — verifies "No currently supported software" renders instead of a blank table body
+- **overloaded** — Tests rendering with many catalog items — verifies the table handles long lists without overflow or layout issues
+- **slow** *(delay: 1000)* — Tests the loading-spinner state while the request is in flight — verifies all spinners are visible and no flash of empty content
+- **server-error** *(500)* — Tests 500 response — verifies the alert-error banner renders with "Bummer - can't load the catalog right now."
+- **malformed-data** *(200)* — Return a few catalog items that don't have titles or vendors
+
+sourceHints:
+- `src/app/areas/catalog/data-catalog/types.ts`
+- `src/app/areas/catalog/feature-catalog/pages/overview.ts`
 
 ### GET `/api/books`
 manifest: `src\mocks\books\books.yaml`

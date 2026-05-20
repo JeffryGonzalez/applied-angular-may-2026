@@ -87,7 +87,7 @@ interface NavEntry {
 export class App {
   private router = inject(Router);
 
-  protected readonly title = signal('Applied Angular');
+  protected readonly title = signal('Software Center');
   protected readonly pinned = signal(false);
   protected readonly hovered = signal(false);
   protected readonly open = computed(() => this.pinned() || this.hovered());
