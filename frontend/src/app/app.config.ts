@@ -1,10 +1,5 @@
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection,
-  provideZonelessChangeDetection,
-} from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import {
   PreloadAllModules,
   provideRouter,
@@ -14,10 +9,10 @@ import {
 } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
 
-import { routes } from './app.routes';
-import { icons } from './areas/shared/util-icons/icons';
 import { provideSignalFormsConfig } from '@angular/forms/signals';
+import { routes } from './app.routes';
 import { authStore } from './areas/shared/util-auth/store';
+import { icons } from './areas/shared/util-icons/icons';
 
 export const appConfig: ApplicationConfig = {
   providers: [
