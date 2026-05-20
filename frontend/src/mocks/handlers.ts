@@ -4,6 +4,7 @@ import resourcesHandler from './resources/resources';
 import booksHandler from './books/books';
 import newsHandler from './news/news';
 import catalogHandler from './catalog/catalog';
+import vendorsHandler from './vendors/vendors';
 import bypassed from './bypassed-endpoints';
 
 const all: HttpHandler[] = [
@@ -11,6 +12,7 @@ const all: HttpHandler[] = [
   ...booksHandler,
   ...newsHandler,
   ...catalogHandler,
+  ...vendorsHandler,
 ];
 
 export const handlers: HttpHandler[] = all.filter((h) => {

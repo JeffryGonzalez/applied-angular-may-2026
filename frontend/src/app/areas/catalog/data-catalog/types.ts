@@ -12,7 +12,7 @@ export type CatalogListItem = z.infer<typeof CatalogListItemSchema>;
 
 export type CatalogListItems = z.infer<typeof CatalogListItemsSchema>;
 
-export type Vendor = {
+export type VendorEntity = {
   id: string;
   name: string;
   url: string;

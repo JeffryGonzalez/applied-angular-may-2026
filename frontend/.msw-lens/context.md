@@ -1,5 +1,5 @@
 # msw-lens — project context
-generated: 2026-05-20T16:05:13.751Z
+generated: 2026-05-20T18:09:13.145Z
 
 > Drop this file into any LLM conversation for instant context about what
 > is mocked in this project, what scenarios exist, and what is currently active.
@@ -8,6 +8,7 @@ generated: 2026-05-20T16:05:13.751Z
 
 | endpoint | method | active scenario |
 |----------|--------|-----------------|
+| `/api/vendors` | GET | `typical` |
 | `/api/resources` | GET | `slow` |
 | `/api/resources` | POST | `success` |
 | `https://news.hypertheory.com/angular` | GET | `many-items` |
@@ -15,6 +16,21 @@ generated: 2026-05-20T16:05:13.751Z
 | `/api/books` | GET | `typical` |
 
 ## Scenario details
+
+### GET `/api/vendors`
+manifest: `src\mocks\vendors\vendors.yaml`
+> Returns the list of vendors loaded into the signal store on the Vendors admin page
+
+- **typical** ✓ **(active)** — Shows several vendors in the card grid — the normal production-like view with name, url, and point-of-contact details
+- **empty** — Tests the zero-vendors state — the grid renders blank with no empty-state message; verifies whether a placeholder should be added
+- **overloaded** — Tests the 4-column grid with many vendors — verifies layout holds and cards don't overflow or collapse
+- **slow** *(delay: 2000)* — Tests the period before _load() resolves — the grid is blank with no loading indicator; verifies whether a skeleton or spinner should be added
+- **server-error** *(500)* — Tests 500 response — fetch throws an unhandled rejection with no UI feedback; verifies whether error handling should be added to the store
+
+sourceHints:
+- `src/app/areas/catalog/data-catalog/vendors-store.ts`
+- `src/app/areas/catalog/feature-admin/pages/vendors.ts`
+- `src/app/areas/catalog/ui-vendors/vendor-list.ts`
 
 ### GET `/api/resources`
 manifest: `src\mocks\resources\resources.yaml`
