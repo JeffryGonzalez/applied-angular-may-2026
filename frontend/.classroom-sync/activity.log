@@ -1485,3 +1485,11 @@
 [14:57:27] 172.18.0.13      SYNC FILE   tsconfig.json
 [14:57:27] 172.18.0.13      SYNC FILE   tsconfig.spec.json
 [15:00:46] 172.18.0.11      SYNC DIR    src/app/areas/catalog/ui-vendors
+[15:20:16] 172.18.0.11      SYNC DIR    src/app/areas/catalog/ui-vendors
+[15:20:22] 172.18.0.11      SYNC FILE   src/app/areas/catalog/data-catalog/types.ts
+[15:20:35] 172.18.0.11      SYNC DIR    src/app/areas/catalog/ui-vendors
+[15:24:41] 172.18.0.11      SYNC FILE   src/app/areas/catalog/data-catalog/vendors-store.ts
+[15:25:19] 172.18.0.11      SYNC FILE   src/app/areas/catalog/ui-vendors/vendor-add.ts
+[15:30:57] 172.18.0.11      SYNC FILE   src/app/areas/catalog/ui-vendors/vendor-add.ts
+[15:32:18] 172.18.0.11      SYNC FILE   .msw-lens/prompts/vendor-add.md
+[15:35:04] 172.18.0.11      SYNC DIR    src/mocks/vendors

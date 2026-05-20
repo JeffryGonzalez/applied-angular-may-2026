@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { VendorEntity } from '../data-catalog/types';
+import { Component, inject, signal } from '@angular/core';
+import { VendorCreate, VendorEntity } from '../data-catalog/types';
 import {
   form,
   FormField,
@@ -10,8 +10,8 @@ import {
   validate,
 } from '@angular/forms/signals';
 import { JsonPipe } from '@angular/common';
+import { vendorsStore } from '../data-catalog/vendors-store';
 
-type VendorCreate = Omit<VendorEntity, 'id'>;
 @Component({
   selector: 'app-admin-vendor-add',
   imports: [FormField, FormRoot, JsonPipe],
@@ -89,6 +89,7 @@ type VendorCreate = Omit<VendorEntity, 'id'>;
   styles: ``,
 })
 export class VendorAdd {
+  store = inject(vendorsStore);
   model = signal<VendorCreate>({
     name: '',
     url: '',
@@ -118,6 +119,24 @@ export class VendorAdd {
         return undefined;
       });
     },
-    {},
+    {
+      submission: {
+        action: async (value) => {
+          const payload = value().controlValue();
+
+          await this.store.add(payload);
+          this.vendorForm().reset();
+          this.model.set({
+            name: '',
+            url: '',
+            pointOfContact: {
+              name: '',
+              email: '',
+              phone: '',
+            },
+          });
+        },
+      },
+    },
   );
 }

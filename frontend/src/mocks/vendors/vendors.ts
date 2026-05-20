@@ -76,4 +76,27 @@ export default [
         return HttpResponse.json(typicalVendors);
     }
   }),
+
+  http.post(ENDPOINT, async ({ request }) => {
+    const scenario = activeScenarios[`POST ${ENDPOINT}`] ?? 'success';
+
+    switch (scenario) {
+      case 'slow':
+        await delay(1000);
+        return HttpResponse.json(
+          { ...((await request.json()) as object), id: crypto.randomUUID() },
+          { status: 201 },
+        );
+
+      case 'server-error':
+        return new HttpResponse(null, { status: 500 });
+
+      case 'success':
+      default:
+        return HttpResponse.json(
+          { ...((await request.json()) as object), id: crypto.randomUUID() },
+          { status: 201 },
+        );
+    }
+  }),
 ] as HttpHandler[];

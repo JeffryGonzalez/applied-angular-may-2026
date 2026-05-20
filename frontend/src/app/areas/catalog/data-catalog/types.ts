@@ -22,3 +22,5 @@ export type VendorEntity = {
     phone: string;
   };
 };
+
+export type VendorCreate = Omit<VendorEntity, 'id'>;

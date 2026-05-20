@@ -5,7 +5,7 @@
  */
 const activeScenarios: Record<string, string> = {
   'GET /api/resources': 'slow',
-  'POST /api/resources': 'success',
+  'POST /api/resources': 'slow',
   'GET https://news.hypertheory.com/angular': 'many-items',
   'GET /api/catalog': 'typical',
   'GET /api/vendors': 'typical',

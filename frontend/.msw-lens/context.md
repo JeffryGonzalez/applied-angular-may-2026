@@ -1,5 +1,5 @@
 # msw-lens — project context
-generated: 2026-05-20T18:09:13.145Z
+generated: 2026-05-20T19:35:25.278Z
 
 > Drop this file into any LLM conversation for instant context about what
 > is mocked in this project, what scenarios exist, and what is currently active.
@@ -9,8 +9,9 @@ generated: 2026-05-20T18:09:13.145Z
 | endpoint | method | active scenario |
 |----------|--------|-----------------|
 | `/api/vendors` | GET | `typical` |
+| `/api/vendors` | POST | `success` |
 | `/api/resources` | GET | `slow` |
-| `/api/resources` | POST | `success` |
+| `/api/resources` | POST | `slow` |
 | `https://news.hypertheory.com/angular` | GET | `many-items` |
 | `/api/catalog` | GET | `typical` |
 | `/api/books` | GET | `typical` |
@@ -32,6 +33,18 @@ sourceHints:
 - `src/app/areas/catalog/feature-admin/pages/vendors.ts`
 - `src/app/areas/catalog/ui-vendors/vendor-list.ts`
 
+### POST `/api/vendors`
+manifest: `src\mocks\vendors\vendors-create.yaml`
+> Creates a new vendor from the Add Vendor form and returns the saved entity with a server-assigned id
+
+- **success** ✓ **(active)** — Echoes the posted payload back with a fresh UUID — tests that the new vendor card appears in the grid and the form resets
+- **slow** *(delay: 1000)* — Tests the period while the POST is in flight — verifies whether the submit button shows a pending or disabled state during submission
+- **server-error** *(500)* — Tests 500 response — the store's add() throws an unhandled rejection; verifies whether an error message surfaces or the form retains its input
+
+sourceHints:
+- `src/app/areas/catalog/data-catalog/vendors-store.ts`
+- `src/app/areas/catalog/ui-vendors/vendor-add.ts`
+
 ### GET `/api/resources`
 manifest: `src\mocks\resources\resources.yaml`
 > Returns the list of developer resources displayed on the Overview page
@@ -52,8 +65,8 @@ sourceHints:
 manifest: `src\mocks\resources\resources-create.yaml`
 > Creates a new developer resource from the Add Resource form
 
-- **success** ✓ **(active)** — Echoes the posted payload back with a fresh UUID — tests that the new resource is appended to the store and the form resets
-- **slow** *(delay: 1000)* — Tests that the submit button's pending/disabled state holds while the request is in flight
+- **success** — Echoes the posted payload back with a fresh UUID — tests that the new resource is appended to the store and the form resets
+- **slow** ✓ **(active)** *(delay: 1000)* — Tests that the submit button's pending/disabled state holds while the request is in flight
 - **validation-error** *(400)* — Tests how the form surfaces a 400 from the server — currently rendered via the generic alert, no per-field messages
 - **conflict** *(409)* — Tests how the form surfaces a 409 duplicate-URL conflict from the server (race with client-side dedupe)
 - **unauthorized** *(401)* — Tests 401 mid-submit — verifies whether the form retains input and whether session-expiry handling kicks in

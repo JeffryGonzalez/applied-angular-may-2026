@@ -1,11 +1,21 @@
 import { patchState, signalStore, withHooks, withMethods } from '@ngrx/signals';
-import { setEntities, withEntities } from '@ngrx/signals/entities';
-import { VendorEntity } from './types';
+import { addEntity, setEntities, withEntities } from '@ngrx/signals/entities';
+import { VendorCreate, VendorEntity } from './types';
 
 export const vendorsStore = signalStore(
   withEntities<VendorEntity>(),
   withMethods((store) => {
     return {
+      add: async (item: VendorCreate) => {
+        const response = await fetch('/api/vendors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(item),
+        });
+
+        const newVendor = await response.json();
+        patchState(store, addEntity(newVendor));
+      },
       _load: async () => {
         const vendors = await fetch('/api/vendors')
           .then((v) => v.json())
