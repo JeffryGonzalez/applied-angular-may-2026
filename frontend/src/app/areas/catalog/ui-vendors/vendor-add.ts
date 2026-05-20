@@ -1,15 +1,15 @@
-import { Component, inject, signal } from '@angular/core';
-import { VendorCreate, VendorEntity } from '../data-catalog/types';
+import { JsonPipe } from '@angular/common';
+import { Component, inject, isDevMode, signal } from '@angular/core';
 import {
   form,
   FormField,
   FormRoot,
-  required,
-  minLength,
   maxLength,
+  minLength,
+  required,
   validate,
 } from '@angular/forms/signals';
-import { JsonPipe } from '@angular/common';
+import { validateUrl, VendorCreate } from '../data-catalog/types';
 import { vendorsStore } from '../data-catalog/vendors-store';
 
 @Component({
@@ -84,11 +84,14 @@ import { vendorsStore } from '../data-catalog/vendors-store';
         Add Vendor
       </button>
     </form>
-    <pre>{{ model() | json }}</pre>
+    @defer (when devMode()) {
+      <pre>{{ model() | json }}</pre>
+    }
   `,
   styles: ``,
 })
 export class VendorAdd {
+  devMode = signal(isDevMode());
   store = inject(vendorsStore);
   model = signal<VendorCreate>({
     name: '',
@@ -107,7 +110,16 @@ export class VendorAdd {
       minLength(schema.name, 10);
       maxLength(schema.name, 100);
       required(schema.url);
+      validateUrl(schema.url, { message: 'COME ON!!!!' });
       required(schema.pointOfContact.name);
+      validate(schema.name, ({ value }) => {
+        const name = value().trim().toLocaleLowerCase();
+        if (this.store.entities().some((e) => e.name.toLowerCase() === name)) {
+          return { kind: 'in-use', message: 'We already have that vendor!' };
+        } else {
+          return;
+        }
+      });
 
       validate(schema.pointOfContact, ({ value }) => {
         if (value().email.trim() === '' && value().phone.trim() === '') {

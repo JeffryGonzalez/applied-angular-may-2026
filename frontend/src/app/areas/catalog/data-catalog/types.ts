@@ -1,3 +1,4 @@
+import { SchemaPath, validate } from '@angular/forms/signals';
 import * as z from 'zod/mini';
 
 export const CatalogListItemSchema = z.object({
@@ -24,3 +25,17 @@ export type VendorEntity = {
 };
 
 export type VendorCreate = Omit<VendorEntity, 'id'>;
+
+export function validateUrl(path: SchemaPath<string>, options?: { message: string }) {
+  return validate(path, ({ value }) => {
+    try {
+      new URL(value());
+      return null;
+    } catch {
+      return {
+        kind: 'url',
+        message: options?.message || 'Enter a valid URL',
+      };
+    }
+  });
+}

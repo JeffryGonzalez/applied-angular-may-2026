@@ -88,6 +88,9 @@ samp {
     overflow: hidden;
   }
 
+  pre {
+    @apply border-4 border-red-700;
+  }
   button[aria-disabled='true']::after {
     content: '';
     position: absolute;

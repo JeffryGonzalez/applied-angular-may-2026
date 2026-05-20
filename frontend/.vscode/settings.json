@@ -2,6 +2,9 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
+  "yaml.schemas": {
+    "./node_modules/@hypertheory-labs/msw-lens/schema/manifest.schema.json": "**/mocks/**/*.yaml"
+  },
 
   "files.autoSave": "onFocusChange",
   "js/ts.inlayHints.parameterNames.enabled": "literals",
@@ -20,7 +23,5 @@
     "source.fixAll.eslint": "always",
     "source.format": "always"
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-
-
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

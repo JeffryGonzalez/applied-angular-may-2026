@@ -39,6 +39,7 @@
     "@angular/compiler-cli": "^21.2.0",
     "@eslint/js": "^10.0.1",
     "@hypertheory-labs/msw-lens": "^0.2.2",
+    "@hypertheory-labs/stellar-ng-devtools": "^0.4.1",
     "@tailwindcss/postcss": "^4.1.12",
     "@tailwindcss/typography": "^0.5.19",
     "angular-eslint": "21.4.0",
