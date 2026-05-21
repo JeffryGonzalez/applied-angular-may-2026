@@ -1,5 +1,12 @@
 import { patchState, signalStore, withMethods } from '@ngrx/signals';
-import { addEntity, setEntities, withEntities } from '@ngrx/signals/entities';
+import {
+  addEntities,
+  addEntity,
+  setEntities,
+  withEntities,
+  upsertEntities,
+  removeAllEntities,
+} from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CatalogApi, VendorCatalogItem, VendorCatalogItemCreate } from './catalog-api';
 import { inject } from '@angular/core';
@@ -25,6 +32,7 @@ export const vendorCatalogItemStore = signalStore(
       ),
       getForVendor: rxMethod<string>(
         pipe(
+          tap((_) => patchState(store, removeAllEntities())),
           switchMap((id) =>
             apiService
               .getCatalogItems(id)

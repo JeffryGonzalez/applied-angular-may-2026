@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { PageHeader } from '../../../shared/ui-page-header/page-header';
 import { vendorCatalogItemStore } from '../../data-catalog/vendor-catalog-item-store';
 import { JsonPipe } from '@angular/common';
@@ -18,4 +18,11 @@ import { JsonPipe } from '@angular/common';
 export class ItemsPage {
   id = input.required<string>(); // from the route parameter
   store = inject(vendorCatalogItemStore);
+
+  constructor() {
+    effect(() => {
+      const id = this.id();
+      this.store.getForVendor(id);
+    });
+  }
 }

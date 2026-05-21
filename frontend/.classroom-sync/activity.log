@@ -2076,3 +2076,7 @@
 [12:30:52] 172.18.0.13      SYNC FILE   tsconfig.app.json
 [12:30:52] 172.18.0.13      SYNC FILE   tsconfig.json
 [12:30:52] 172.18.0.13      SYNC FILE   tsconfig.spec.json
+[12:32:33] 172.18.0.11      SYNC DIR    src/app/areas/catalog
+[12:32:55] 172.18.0.14      SYNC DIR    notes
+[12:33:00] 172.18.0.14      SYNC DIR    src
+[12:33:11] 172.18.0.14      SYNC DIR    src

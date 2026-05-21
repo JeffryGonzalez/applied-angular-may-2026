@@ -1,5 +1,5 @@
 # msw-lens — project context
-generated: 2026-05-20T19:35:25.278Z
+generated: 2026-05-21T16:33:14.906Z
 
 > Drop this file into any LLM conversation for instant context about what
 > is mocked in this project, what scenarios exist, and what is currently active.
