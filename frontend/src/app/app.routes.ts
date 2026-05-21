@@ -56,6 +56,12 @@ export const routes: AppRoute[] = [
     loadChildren: () =>
       import('./areas/jeff-pomodoro/feature-home/pomodoro.routes').then((r) => r.pomodoroRoutes),
   },
+  {
+  path: 'todos',
+  data: { nav: { label: 'Todos', icon: 'solarCalendar' } },
+  loadChildren: () =>
+    import('./areas/todos/feature-home/todos.routes').then((m) => m.todosRoutes),
+},
 
   {
     path: '**',
