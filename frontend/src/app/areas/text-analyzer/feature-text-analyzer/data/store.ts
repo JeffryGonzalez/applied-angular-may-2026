@@ -1,5 +1,6 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { AnalysisSnapshot } from './types';
+import { effect } from '@angular/core';
 
 const DEFAULT_STOP_WORDS = [
   'the',
@@ -77,4 +78,22 @@ export const textAnalyzerStore = signalStore(
       patchState(store, { history: [] });
     },
   })),
+  withHooks({
+    onInit(store) {
+      const saved = localStorage.getItem('text-analyzer-state');
+      if (saved) patchState(store, JSON.parse(saved));
+      effect(() => {
+        localStorage.setItem(
+          'text-analyzer-state',
+          JSON.stringify({
+            wpm: store.wpm(),
+            minWordLength: store.minWordLength(),
+            excludedWords: store.excludedWords(),
+            history: store.history(),
+            text: store.text(),
+          }),
+        );
+      });
+    },
+  }),
 );
