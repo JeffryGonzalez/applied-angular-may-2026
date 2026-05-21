@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { PageHeader } from '../../../shared/ui-page-header/page-header';
+import { pomodoroStore } from '../../data/store';
 
 @Component({
   selector: 'app-pomodoro-final-timer',
@@ -44,13 +45,16 @@ import { PageHeader } from '../../../shared/ui-page-header/page-header';
 })
 export class PomodoroFinalTimerPage {
   private destroyRef = inject(DestroyRef);
+  protected store = inject(pomodoroStore);
 
   protected mode = signal<'work' | 'break'>('work');
-  protected secondsRemaining = signal(25 * 60);
+  protected secondsRemaining = signal(this.store.workMinutes() * 60);
   protected isRunning = signal(false);
 
   protected sessionDuration = computed(() =>
-    this.mode() === 'work' ? 25 * 60 : 5 * 60,
+    this.mode() === 'work'
+      ? this.store.workMinutes() * 60
+      : this.store.breakMinutes() * 60,
   );
 
   protected formattedTime = computed(() => {
