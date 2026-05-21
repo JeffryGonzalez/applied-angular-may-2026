@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { PageHeader } from '../../../shared/ui-page-header/page-header';
-import { todosStore } from '../../data/store';
+import { Filter, todosStore } from '../../data/store';
 
 @Component({
   selector: 'app-todos-list',
@@ -17,9 +17,19 @@ import { todosStore } from '../../data/store';
         (input)="draft.set($any($event.target).value)"
         (keydown.enter)="add()"
       />
-
+    <div class="join">
+        @for (f of filters; track f) {
+            <button
+            class="btn btn-sm join-item"
+            [class.btn-active]="store.filter() === f"
+            (click)="store.setFilter(f)"
+            >
+            {{ f }}
+            </button>
+        }
+    </div>
       <ul class="flex flex-col divide-y">
-        @for (todo of store.entities(); track todo.id) {
+        @for (todo of store.visible(); track todo.id) {
           <li class="flex items-center gap-3 py-2">
             <input
                 type="checkbox"
@@ -84,6 +94,7 @@ export class ListPage {
   protected readonly draft = signal('');
   protected readonly editingId = signal<string | null>(null);
   protected readonly editingDraft = signal('');
+  protected readonly filters: Filter[] = ['all', 'active', 'completed'];
 
   protected add(): void {
     this.store.add(this.draft());
