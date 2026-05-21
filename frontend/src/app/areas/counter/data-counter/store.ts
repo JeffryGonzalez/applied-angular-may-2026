@@ -9,11 +9,11 @@ import {
   withComputed,
   withHooks,
   withMethods,
+  withProps,
   withState,
 } from '@ngrx/signals';
-import { Counter } from '../feature-counter/counter';
 
-const byValues = [1, 3, 5] as const;
+const byValues = [1, 3, 5, 10] as const;
 type ByValues = (typeof byValues)[number];
 
 type CounterState = {
@@ -22,6 +22,9 @@ type CounterState = {
 };
 
 export const counterStore = signalStore(
+  withProps(() => ({
+    countByVals: byValues,
+  })),
   withState<CounterState>({
     by: 1,
     current: 0,

@@ -29,7 +29,7 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       withPreloading(PreloadAllModules),
     ),
-    provideStellar(withHttpTrafficMonitoring(), withStellarBridge()),
+    provideStellar(withHttpTrafficMonitoring()),
     provideIcons(icons),
     authStore,
     provideSignalFormsConfig({
