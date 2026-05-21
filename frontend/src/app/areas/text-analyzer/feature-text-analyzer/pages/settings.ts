@@ -8,6 +8,7 @@ import { textAnalyzerStore } from '../data/store';
     <p>Settings</p>
     <label for="wpm">Words Per Minute (WPM): {{ store.wpm() }}</label>
     <input
+      class="range"
       id="wpm"
       type="range"
       class="range"
@@ -30,7 +31,7 @@ import { textAnalyzerStore } from '../data/store';
       (input)="store.setMinWordLength($event.target.valueAsNumber)"
     />
     <br />
-    <p>Excluded Words (Stop Words)</p>
+    <h4>Excluded Words (Stop Words)</h4>
     <p>{{ store.excludedWords().join(', ') }}</p>
   `,
   styles: ``,

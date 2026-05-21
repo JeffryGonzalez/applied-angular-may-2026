@@ -81,6 +81,7 @@ import { AnalysisSnapshot } from '../data/types';
     }
     <br />
     <button class="btn btn-primary mt-4" (click)="saveToHistory()">Save to History</button>
+    <button class="btn btn-primary mt-4" (click)="copyToClipboard()">Copy to Clipboard</button>
   `,
   styles: ``,
 })
@@ -172,5 +173,20 @@ export class Analyzer {
       topKeywords: this.topKeywords().slice(0, 5),
     };
     this.textStore.addToHistory(snapshot);
+  }
+
+  protected copyToClipboard(): void {
+    navigator.clipboard.writeText(
+      this.textStore.wpm() +
+        ' WPM, ' +
+        this.textStore.minWordLength() +
+        ' Min Word Len\n' +
+        `Words: ${this.wordCount()}, Characters: ${this.charCount()}, Sentences: ${this.sentenceCount()}, Paragraphs: ${this.paragraphCount()}\n` +
+        `Longest Word: ${this.longestWord()}, Avg Word Length: ${this.avgWordLength()}, Avg Words/Sentence: ${this.avgWordsPerSentence()}, Reading Time: ${this.readingTimeFormatted()}\n` +
+        `Top Keywords: ${this.topKeywords()
+          .map((kw) => `${kw.word} (${kw.count})`)
+          .join(', ')}\n\n` +
+        this.textStore.text(),
+    );
   }
 }
