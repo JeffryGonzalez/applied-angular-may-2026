@@ -1,4 +1,6 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { textAnalyzerStore } from '../data/store';
+import { AnalysisSnapshot } from '../data/types';
 
 @Component({
   selector: 'app-analyzer',
@@ -7,8 +9,8 @@ import { Component, computed, signal } from '@angular/core';
     <p>Analyzer</p>
     <textarea
       class="textarea textarea-bordered w-full min-h-40"
-      [value]="text()"
-      (input)="text.set($any($event.target).value)"
+      [value]="textStore.text()"
+      (input)="textStore.setText($any($event.target).value)"
       placeholder="Paste or type text to analyze…"
     ></textarea>
     @if (wordCount() > 0) {
@@ -37,6 +39,9 @@ import { Component, computed, signal } from '@angular/core';
           <div class="stat-title">Vowels</div>
           <div class="stat-value text-primary">{{ vowels() }}</div>
         </div>
+      </div>
+      <br />
+      <div class="stats stats-horizontal shadow">
         <div class="stat">
           <div class="stat-title">Longest Word</div>
           <div class="stat-value text-primary">{{ longestWord() }}</div>
@@ -54,42 +59,58 @@ import { Component, computed, signal } from '@angular/core';
           <div class="stat-value text-primary">{{ readingTimeFormatted() }}</div>
         </div>
       </div>
-    }
+      <br />
 
+      <div class="stats stats-horizontal shadow">
+        <div class="stat">
+          <div class="stat-title">WPM</div>
+          <div class="stat-value text-primary">{{ textStore.wpm() }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Min Word Length</div>
+          <div class="stat-value text-primary">{{ textStore.minWordLength() }}</div>
+        </div>
+      </div>
+    }
+    <br />
     @for (kw of topKeywords(); track kw.word) {
       <div class="badge badge-outline gap-1">
         <span class="font-semibold">{{ kw.word }}</span>
         <span class="opacity-50">×{{ kw.count }}</span>
       </div>
     }
+    <br />
+    <button class="btn btn-primary mt-4" (click)="saveToHistory()">Save to History</button>
   `,
   styles: ``,
 })
 export class Analyzer {
-  protected text = signal('');
+  protected textStore = inject(textAnalyzerStore);
 
   private words = computed(
     () =>
-      this.text()
+      this.textStore
+        .text()
         .toLowerCase()
         .match(/\b[a-z']+\b/g) ?? [],
   );
 
   protected wordCount = computed(() => this.words().length);
-  protected charCount = computed(() => this.text().length);
-  protected charCountNoSpaces = computed(() => this.text().replace(/\s/g, '').length);
-  protected vowels = computed(() => (this.text().match(/[aeiou]/gi) || []).length); // just for fun
+  protected charCount = computed(() => this.textStore.text().length);
+  protected charCountNoSpaces = computed(() => this.textStore.text().replace(/\s/g, '').length);
+  protected vowels = computed(() => (this.textStore.text().match(/[aeiou]/gi) || []).length); // just for fun
 
   protected sentenceCount = computed(() => {
-    const matches = this.text().match(/[^.!?]+[.!?]+/g);
-    return matches ? matches.length : this.text().trim().length > 0 ? 1 : 0;
+    const matches = this.textStore.text().match(/[^.!?]+[.!?]+/g);
+    return matches ? matches.length : this.textStore.text().trim().length > 0 ? 1 : 0;
   });
 
   protected paragraphCount = computed(() => {
-    const paras = this.text()
+    const paras = this.textStore
+      .text()
       .split(/\n\s*\n/)
       .filter((p) => p.trim().length > 0);
-    return paras.length || (this.text().trim().length > 0 ? 1 : 0);
+    return paras.length || (this.textStore.text().trim().length > 0 ? 1 : 0);
   });
 
   protected longestWord = computed(() => {
@@ -108,9 +129,9 @@ export class Analyzer {
     return (this.wordCount() / sentences).toFixed(1);
   });
 
-  private wpm = signal(200);
-
-  private readingTimeSecs = computed(() => Math.ceil((this.wordCount() / this.wpm()) * 60));
+  private readingTimeSecs = computed(() =>
+    Math.ceil((this.wordCount() / this.textStore.wpm()) * 60),
+  );
 
   protected readingTimeFormatted = computed(() => {
     const secs = this.readingTimeSecs();
@@ -119,20 +140,37 @@ export class Analyzer {
     const rem = secs % 60;
     return rem > 0 ? `${mins}m ${rem}s` : `${mins}m`;
   });
-  private STOP_WORDS = new Set(['the', 'a', 'an', 'and', 'or', 'is', 'are', 'in', 'of', 'to']);
+  private STOP_WORDS = new Set(this.textStore.excludedWords());
 
   private wordFrequency = computed(() => {
+    const excluded = new Set(this.textStore.excludedWords());
+    const minLen = this.textStore.minWordLength();
     const freq = new Map<string, number>();
     for (const word of this.words()) {
-      if (this.STOP_WORDS.has(word)) continue;
+      if (word.length < minLen || excluded.has(word)) continue;
       freq.set(word, (freq.get(word) ?? 0) + 1);
     }
     return freq;
   });
+
   protected topKeywords = computed(() =>
     [...this.wordFrequency().entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([word, count]) => ({ word, count })),
   );
+
+  protected saveToHistory(): void {
+    const snapshot: AnalysisSnapshot = {
+      id: crypto.randomUUID(),
+      savedAt: new Date().toISOString(),
+      excerpt:
+        this.textStore.text().slice(0, 200) + (this.textStore.text().length > 200 ? '…' : ''),
+      wordCount: this.wordCount(),
+      charCount: this.charCount(),
+      readingTimeSecs: this.readingTimeSecs(),
+      topKeywords: this.topKeywords().slice(0, 5),
+    };
+    this.textStore.addToHistory(snapshot);
+  }
 }
