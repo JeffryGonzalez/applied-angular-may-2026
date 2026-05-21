@@ -3,8 +3,10 @@ import {
   Component,
   DestroyRef,
   computed,
+  effect,
   inject,
   signal,
+  untracked,
 } from '@angular/core';
 import { PageHeader } from '../../../shared/ui-page-header/page-header';
 
@@ -15,10 +17,17 @@ import { PageHeader } from '../../../shared/ui-page-header/page-header';
   template: `
     <app-page-header title="Pomodoro Timer" />
     <div class="flex flex-col items-center gap-6 py-4">
-      <div class="badge badge-lg badge-error">Focus</div>
+      <div
+        class="badge badge-lg"
+        [class.badge-error]="mode() === 'work'"
+        [class.badge-info]="mode() === 'break'"
+      >
+        {{ mode() === 'work' ? 'Focus' : 'Break' }}
+      </div>
       <div
         class="radial-progress font-mono font-bold"
-        [class.text-error]="true"
+        [class.text-error]="mode() === 'work'"
+        [class.text-info]="mode() === 'break'"
         [style.--value]="progressPercent()"
         [style.--size.rem]="12"
         [style.--thickness.px]="8"
@@ -37,8 +46,13 @@ import { PageHeader } from '../../../shared/ui-page-header/page-header';
 export class PomodoroFinalTimerPage {
   private destroyRef = inject(DestroyRef);
 
+  protected mode = signal<'work' | 'break'>('work');
   protected secondsRemaining = signal(25 * 60);
   protected isRunning = signal(false);
+
+  protected sessionDuration = computed(() =>
+    this.mode() === 'work' ? 25 * 60 : 5 * 60,
+  );
 
   protected formattedTime = computed(() => {
     const seconds = Math.max(0, this.secondsRemaining());
@@ -48,7 +62,7 @@ export class PomodoroFinalTimerPage {
   });
 
   protected progressPercent = computed(() => {
-    const total = 25 * 60;
+    const total = this.sessionDuration();
     if (!total) return 0;
     return Math.round(((total - this.secondsRemaining()) / total) * 100);
   });
@@ -58,6 +72,14 @@ export class PomodoroFinalTimerPage {
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
+    effect(() => {
+      if (this.secondsRemaining() === 0 && this.isRunning()) {
+        this.pause();
+        this.mode.update((current) => (current === 'work' ? 'break' : 'work'));
+        this.secondsRemaining.set(this.sessionDuration());
+      }
+    });
+
     this.destroyRef.onDestroy(() => {
       if (this.intervalId !== null) {
         clearInterval(this.intervalId);
@@ -90,6 +112,6 @@ export class PomodoroFinalTimerPage {
 
   protected reset(): void {
     this.pause();
-    this.secondsRemaining.set(25 * 60);
+    this.secondsRemaining.set(this.sessionDuration());
   }
 }
