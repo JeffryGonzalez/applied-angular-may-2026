@@ -54,6 +54,29 @@ import { todosStore } from '../../data/store';
         }
       </ul>
     </div>
+    <div class="flex items-center gap-4 pt-2 border-t text-sm">
+    <label class="flex items-center gap-2 cursor-pointer">
+        <input
+        type="checkbox"
+        class="checkbox checkbox-sm"
+        [checked]="store.allComplete()"
+        (change)="store.toggleAll($any($event.target).checked)"
+        />
+        <span>Toggle all</span>
+    </label>
+
+    <span class="opacity-70">
+        {{ store.remaining() }} {{ store.remaining() === 1 ? 'item' : 'items' }} left
+    </span>
+
+    <span class="flex-1"></span>
+
+    @if (store.completedCount() > 0) {
+        <button class="btn btn-ghost btn-sm" (click)="store.clearCompleted()">
+        Clear completed ({{ store.completedCount() }})
+        </button>
+    }
+    </div>
   `,
 })
 export class ListPage {
