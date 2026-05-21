@@ -26,10 +26,33 @@ import { Component, computed, signal } from '@angular/core';
           <div class="stat-value text-primary">{{ charCountNoSpaces() }}</div>
         </div>
         <div class="stat">
+          <div class="stat-title">Sentences</div>
+          <div class="stat-value text-primary">{{ sentenceCount() }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Paragraphs</div>
+          <div class="stat-value text-primary">{{ paragraphCount() }}</div>
+        </div>
+        <div class="stat">
           <div class="stat-title">Vowels</div>
           <div class="stat-value text-primary">{{ vowels() }}</div>
         </div>
-        <!-- chars and others -->
+        <div class="stat">
+          <div class="stat-title">Longest Word</div>
+          <div class="stat-value text-primary">{{ longestWord() }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Avg Word Length</div>
+          <div class="stat-value text-primary">{{ avgWordLength() }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Avg Words per Sentence</div>
+          <div class="stat-value text-primary">{{ avgWordsPerSentence() }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Reading Time</div>
+          <div class="stat-value text-primary">{{ readingTimeFormatted() }}</div>
+        </div>
       </div>
     }
   `,
@@ -48,5 +71,45 @@ export class Analyzer {
   protected wordCount = computed(() => this.words().length);
   protected charCount = computed(() => this.text().length);
   protected charCountNoSpaces = computed(() => this.text().replace(/\s/g, '').length);
-  protected vowels = computed(() => (this.text().match(/[aeiou]/gi) || []).length);
+  protected vowels = computed(() => (this.text().match(/[aeiou]/gi) || []).length); // just for fun
+
+  protected sentenceCount = computed(() => {
+    const matches = this.text().match(/[^.!?]+[.!?]+/g);
+    return matches ? matches.length : this.text().trim().length > 0 ? 1 : 0;
+  });
+
+  protected paragraphCount = computed(() => {
+    const paras = this.text()
+      .split(/\n\s*\n/)
+      .filter((p) => p.trim().length > 0);
+    return paras.length || (this.text().trim().length > 0 ? 1 : 0);
+  });
+
+  protected longestWord = computed(() => {
+    return this.words().reduce((longest, cur) => (longest.length < cur.length ? cur : longest));
+  });
+
+  protected avgWordLength = computed(() => {
+    return (
+      this.words().reduce((sum, word) => sum + word.length, 0) / this.words().length
+    ).toPrecision(3);
+  });
+
+  protected avgWordsPerSentence = computed(() => {
+    const sentences = this.sentenceCount();
+    if (sentences === 0) return '0';
+    return (this.wordCount() / sentences).toFixed(1);
+  });
+
+  private wpm = signal(200);
+
+  private readingTimeSecs = computed(() => Math.ceil((this.wordCount() / this.wpm()) * 60));
+
+  protected readingTimeFormatted = computed(() => {
+    const secs = this.readingTimeSecs();
+    if (secs < 60) return `${secs}s`;
+    const mins = Math.floor(secs / 60);
+    const rem = secs % 60;
+    return rem > 0 ? `${mins}m ${rem}s` : `${mins}m`;
+  });
 }
