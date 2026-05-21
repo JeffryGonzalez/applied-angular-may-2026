@@ -22,16 +22,33 @@ import { todosStore } from '../../data/store';
         @for (todo of store.entities(); track todo.id) {
           <li class="flex items-center gap-3 py-2">
             <input
-              type="checkbox"
-              class="checkbox"
-              [checked]="todo.completed"
-              (change)="store.toggle(todo.id)"
+                type="checkbox"
+                class="checkbox"
+                [checked]="todo.completed"
+                (change)="store.toggle(todo.id)"
             />
-            <span class="flex-1" [class.line-through]="todo.completed" [class.opacity-60]="todo.completed">
-              {{ todo.title }}
-            </span>
+            @if (editingId() === todo.id) {
+                <input
+                class="input input-bordered input-sm flex-1"
+                autofocus
+                [value]="editingDraft()"
+                (input)="editingDraft.set($any($event.target).value)"
+                (keydown.enter)="commitEdit(todo.id)"
+                (keydown.escape)="cancelEdit()"
+                (blur)="commitEdit(todo.id)"
+                />
+            } @else {
+                <span
+                class="flex-1 cursor-text"
+                [class.line-through]="todo.completed"
+                [class.opacity-60]="todo.completed"
+                (dblclick)="startEdit(todo)"
+                >
+                {{ todo.title }}
+                </span>
+            }
             <button class="btn btn-ghost btn-xs" (click)="store.remove(todo.id)">✕</button>
-          </li>
+            </li>
         } @empty {
           <li class="opacity-60 italic py-4">Nothing yet. Add one above.</li>
         }
@@ -42,9 +59,25 @@ import { todosStore } from '../../data/store';
 export class ListPage {
   protected readonly store = inject(todosStore);
   protected readonly draft = signal('');
+  protected readonly editingId = signal<string | null>(null);
+  protected readonly editingDraft = signal('');
 
   protected add(): void {
     this.store.add(this.draft());
     this.draft.set('');
   }
+
+  protected startEdit(todo: { id: string; title: string }): void {
+    this.editingId.set(todo.id);
+    this.editingDraft.set(todo.title);
+  }
+
+  protected commitEdit(id: string): void {
+    this.store.rename(id, this.editingDraft());
+    this.editingId.set(null);
+  }
+
+  protected cancelEdit(): void {
+    this.editingId.set(null);
+  }   
 }
