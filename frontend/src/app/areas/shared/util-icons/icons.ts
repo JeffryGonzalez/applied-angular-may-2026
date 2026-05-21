@@ -17,6 +17,7 @@ import {
   solarStopwatch,
   solarHistory,
   solarTestTube,
+  solarClipboardList,
 } from '@ng-icons/solar-icons/outline';
 
 export const icons = {
@@ -38,6 +39,7 @@ export const icons = {
   solarHistory,
   solarTestTube,
   solarAddSquareBold,
+  solarClipboardList,
 } as const;
 
 export type IconName = keyof typeof icons;
