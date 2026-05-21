@@ -14,7 +14,7 @@ import { vendorsStore } from '../data-catalog/vendors-store';
 
 @Component({
   selector: 'app-admin-vendor-add',
-  imports: [FormField, FormRoot, JsonPipe],
+  imports: [FormField, FormRoot],
   template: `
     <form class="flex flex-col gap-4 max-w-lg p-8" [formRoot]="vendorForm">
       <div class="flex flex-col w-full">
@@ -84,9 +84,9 @@ import { vendorsStore } from '../data-catalog/vendors-store';
         Add Vendor
       </button>
     </form>
-    @defer (when devMode()) {
+    <!-- @defer (when devMode()) {
       <pre>{{ model() | json }}</pre>
-    }
+    } -->
   `,
   styles: ``,
 })

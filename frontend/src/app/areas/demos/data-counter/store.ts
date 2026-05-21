@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { signal } from '@angular/core';
+import { sanitizeConfig, withStellarDevtools } from '@hypertheory-labs/stellar-ng-devtools';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { withLogging } from '../../shared/util-logging/store-logging-feature';
-import { sanitizeConfig, withStellarDevtools } from '@hypertheory-labs/stellar-ng-devtools';
-import { Counter } from '../../counter/feature-counter/counter';
 
 // @Service() // makes it provided in root, you DO NOT HAVE TO DO THIS for a service. Oh, it will give you an error if you do constructor injection.
 export class CounterStore {

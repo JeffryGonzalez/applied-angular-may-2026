@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { PageHeader } from '../../../shared/ui-page-header/page-header';
-import { CounterStore, signalCounterStore } from '../../data-counter/store';
+import { signalCounterStore } from '../../data-counter/store';
 
 @Component({
   selector: 'app-demos-counter',

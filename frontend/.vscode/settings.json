@@ -16,7 +16,7 @@
   "editor.inlayHints.enabled": "offUnlessPressed",
   "eslint.codeActionsOnSave.mode": "all",
   "editor.formatOnSave": true,
-  "workbench.tree.indent": 19,
+  "workbench.tree.indent": 29,
   "explorer.compactFolders": false,
 
   "editor.codeActionsOnSave": {

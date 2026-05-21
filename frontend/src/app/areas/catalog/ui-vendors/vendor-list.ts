@@ -1,15 +1,16 @@
 import { Component, input } from '@angular/core';
 import { VendorEntity } from '../data-catalog/types';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-vendors-list',
-  imports: [],
+  imports: [RouterLink],
   template: `
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       @for (vendor of vendors(); track vendor.id) {
         <div class="card card-border bg-base-100">
           <div class="card-body">
-            <p class="card-title">{{ vendor.name }}</p>
+            <a [routerLink]="[vendor.id]" class="card-title">{{ vendor.name }}</a>
             <p>{{ vendor.url }}</p>
             <p>Contact {{ vendor.pointOfContact.name }} at {{ vendor.pointOfContact.email }}</p>
           </div>

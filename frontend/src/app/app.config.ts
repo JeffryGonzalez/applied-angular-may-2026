@@ -14,11 +14,7 @@ import { routes } from './app.routes';
 import { authStore } from './areas/shared/util-auth/store';
 import { icons } from './areas/shared/util-icons/icons';
 
-import {
-  provideStellar,
-  withHttpTrafficMonitoring,
-  withStellarBridge,
-} from '@hypertheory-labs/stellar-ng-devtools';
+import { provideStellar, withHttpTrafficMonitoring } from '@hypertheory-labs/stellar-ng-devtools';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),

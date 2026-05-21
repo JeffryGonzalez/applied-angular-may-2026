@@ -1,4 +1,4 @@
-import { Component, effect, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, input, OnDestroy } from '@angular/core';
 
 // TypeScript -> @Script
 
@@ -22,7 +22,8 @@ export class LifechildPage implements OnDestroy {
     });
   }
   ngOnDestroy(): void {
-    console.log('Goodbye, cruel world!' + this.id());
+    const message = 'Hello!';
+    console.log('Goodbye, cruel world!' + this.id() + message);
   }
 
   // 500, 2

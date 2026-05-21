@@ -14,6 +14,11 @@ Questions?
 
 - Finish Up
 - ESLint
+  - Tools that are about subjective code quality stuff.
+    - Consistency on code style
+      - use eslint to enforce this kind of thing.
+    - Formatting
+    - Editor related stuff
 - Auth
 - Catalog Items
 - RxJs - Interop (Stores, Signals, Etc.)

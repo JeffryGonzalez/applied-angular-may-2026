@@ -4,12 +4,14 @@ import { OverviewPage } from './pages/overview';
 import { VendorsPage } from './pages/vendors';
 import { ItemsPage } from './pages/items';
 import { vendorsStore } from '../data-catalog/vendors-store';
+import { vendorCatalogItemStore } from '../data-catalog/vendor-catalog-item-store';
+import { CatalogApi } from '../data-catalog/catalog-api';
 
 export const softwareAdminRoutes: Routes = [
   {
     path: '',
     component: Admin,
-    providers: [vendorsStore],
+    providers: [vendorsStore, vendorCatalogItemStore, CatalogApi],
     data: { area: { label: 'Area Title' } },
     children: [
       {
@@ -21,11 +23,12 @@ export const softwareAdminRoutes: Routes = [
         path: 'vendors',
         component: VendorsPage,
         data: { nav: { label: 'Vendors' } },
-      },
-      {
-        path: 'items',
-        component: ItemsPage,
-        data: { nav: { label: 'Items' } },
+        children: [
+          {
+            path: ':id',
+            component: ItemsPage,
+          },
+        ],
       },
     ],
   },
