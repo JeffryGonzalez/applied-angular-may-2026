@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 export const softwareCenterTeamMember = () => {
   const auth = inject(authStore);
   const router = inject(Router);
-  return true;
+
   if (auth.isSoftwareCenterTeamMember()) {
     return true;
   } else {
@@ -16,7 +16,7 @@ export const softwareCenterTeamMember = () => {
 export const manager = () => {
   const auth = inject(authStore);
   const router = inject(Router);
-  return true;
+
   if (auth.isManager()) {
     return true;
   } else {

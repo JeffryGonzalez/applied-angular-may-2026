@@ -8,6 +8,10 @@ const activeScenarios: Record<string, string> = {
   'POST /api/resources': 'slow',
   'GET https://news.hypertheory.com/angular': 'many-items',
   'GET /api/catalog': 'typical',
+  'GET /api/vendors': 'typical',
+  'POST /api/vendors': 'success',
+  'GET /api/vendors/:vendorId/items': 'typical',
+  'POST /api/vendors/:vendorId/items': 'success',
 };
 
 export default activeScenarios;

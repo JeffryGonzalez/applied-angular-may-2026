@@ -7,11 +7,6 @@
  *
  * Keys are "METHOD path" — same format as active-scenarios.ts.
  */
-const bypassed = new Set<string>([
-  'GET /api/vendors',
-  'GET /api/vendors/:vendorId/items',
-  'POST /api/vendors',
-  'POST /api/vendors/:vendorId/items',
-]);
+const bypassed = new Set<string>([]);
 
 export default bypassed;

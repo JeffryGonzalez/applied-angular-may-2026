@@ -24,7 +24,7 @@ I'll share the repository URL in class. Once you have it:
 Using the [GitHub CLI](https://cli.github.com):
 
 ```bash
-gh repo fork <repo-url> --clone=false
+gh repo fork https://github.com/JeffryGonzalez/applied-angular-may-2026 --clone=false
 ```
 
 > If you've never used `gh` before, run `gh auth login` first.
@@ -36,14 +36,14 @@ We'll all work out of the same directory so the paths in any pair-programming or
 ```bash
 mkdir -p ~/student/class/lab
 cd ~/student/class/lab
-gh repo clone <your-github-username>/<repo-name>
-cd <repo-name>
+gh repo clone <your-github-username>/applied-angular-may-2026
+cd applied-angular-may-2026/frontend
 ```
 
 ### 3. Create a branch named after you
 
 ```bash
-git checkout -b <your-name>
+git checkout -b <yourname>
 ```
 
 Use whatever form of your name is recognizable — `jane-doe`, `jdoe`, etc. One branch per student.
@@ -58,7 +58,7 @@ npm ci
 
 ### 5. Pick a lab and work through it
 
-Pick one of the four labs above. The lab files are in this `class-flow/` directory.
+Pick one of the four labs above. The lab files are in this `notes/labs` directory.
 
 ### 6. Commit often
 

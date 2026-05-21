@@ -1,5 +1,5 @@
 # msw-lens — project context
-generated: 2026-05-21T17:15:35.250Z
+generated: 2026-05-21T18:56:59.183Z
 
 > Drop this file into any LLM conversation for instant context about what
 > is mocked in this project, what scenarios exist, and what is currently active.
@@ -8,10 +8,10 @@ generated: 2026-05-21T17:15:35.250Z
 
 | endpoint | method | active scenario |
 |----------|--------|-----------------|
-| `/api/vendors` | GET | `bypass` |
-| `/api/vendors` | POST | `bypass` |
-| `/api/vendors/:vendorId/items` | GET | `bypass` |
-| `/api/vendors/:vendorId/items` | POST | `bypass` |
+| `/api/vendors` | GET | `typical` |
+| `/api/vendors` | POST | `success` |
+| `/api/vendors/:vendorId/items` | GET | `typical` |
+| `/api/vendors/:vendorId/items` | POST | `success` |
 | `/api/resources` | GET | `slow` |
 | `/api/resources` | POST | `slow` |
 | `https://news.hypertheory.com/angular` | GET | `many-items` |
@@ -24,9 +24,7 @@ generated: 2026-05-21T17:15:35.250Z
 manifest: `src\mocks\vendors\vendors.yaml`
 > Returns the list of vendors loaded into the signal store on the Vendors admin page
 
-**Currently bypassed** — requests pass through to the real API; no scenario is active.
-
-- **typical** — Shows several vendors in the card grid — the normal production-like view with name, url, and point-of-contact details
+- **typical** ✓ **(active)** — Shows several vendors in the card grid — the normal production-like view with name, url, and point-of-contact details
 - **empty** — Tests the zero-vendors state — the grid renders blank with no empty-state message; verifies whether a placeholder should be added
 - **overloaded** — Tests the 4-column grid with many vendors — verifies layout holds and cards don't overflow or collapse
 - **slow** *(delay: 2000)* — Tests the period before _load() resolves — the grid is blank with no loading indicator; verifies whether a skeleton or spinner should be added
@@ -41,9 +39,7 @@ sourceHints:
 manifest: `src\mocks\vendors\vendors-create.yaml`
 > Creates a new vendor from the Add Vendor form and returns the saved entity with a server-assigned id
 
-**Currently bypassed** — requests pass through to the real API; no scenario is active.
-
-- **success** — Echoes the posted payload back with a fresh UUID — tests that the new vendor card appears in the grid and the form resets
+- **success** ✓ **(active)** — Echoes the posted payload back with a fresh UUID — tests that the new vendor card appears in the grid and the form resets
 - **slow** *(delay: 1000)* — Tests the period while the POST is in flight — verifies whether the submit button shows a pending or disabled state during submission
 - **server-error** *(500)* — Tests 500 response — the store's add() throws an unhandled rejection; verifies whether an error message surfaces or the form retains its input
 
@@ -55,9 +51,7 @@ sourceHints:
 manifest: `src\mocks\vendors\vendor-items.yaml`
 > Returns catalog items for a specific vendor displayed on the Items admin page
 
-**Currently bypassed** — requests pass through to the real API; no scenario is active.
-
-- **typical** — Shows catalog items for the requested vendor — the normal production-like view with titles and version numbers rendered as raw JSON
+- **typical** ✓ **(active)** — Shows catalog items for the requested vendor — the normal production-like view with titles and version numbers rendered as raw JSON
 - **empty** — Tests a vendor with no catalog items — the <pre> renders an empty array with no user-visible empty-state message; verifies whether a placeholder should be added
 - **overloaded** — Tests a vendor with 30 catalog items — verifies the <pre> block does not overflow the viewport and that large payloads are still readable
 - **slow** *(delay: 2000)* — Tests the loading state — the <pre> stays empty during the delay because there is no loading indicator; verifies whether a spinner or skeleton should be added
@@ -73,9 +67,7 @@ sourceHints:
 manifest: `src\mocks\vendors\vendor-items-create.yaml`
 > Adds a new catalog item to a specific vendor and returns the saved entity with a server-assigned id
 
-**Currently bypassed** — requests pass through to the real API; no scenario is active.
-
-- **success** — Echoes the posted payload back with a fresh UUID — tests that the new item appears in the entity list and any UI that reads from the store updates correctly
+- **success** ✓ **(active)** — Echoes the posted payload back with a fresh UUID — tests that the new item appears in the entity list and any UI that reads from the store updates correctly
 - **slow** *(delay: 1000)* — Tests the period while the POST is in flight — verifies whether the submit trigger disables or shows a pending state during submission
 - **server-error** *(500)* — Tests a 500 response — the store's addVendor() throws an unhandled rejection; verifies whether an error message surfaces or the request is silently dropped
 

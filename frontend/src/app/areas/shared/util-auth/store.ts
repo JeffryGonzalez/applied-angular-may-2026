@@ -1,34 +1,42 @@
 import { signalStore, withComputed, withState } from '@ngrx/signals';
-import { on, withReducer } from '@ngrx/signals/events';
+import { Events, on, withEventHandlers, withReducer } from '@ngrx/signals/events';
 import { authActions } from './actions';
-import { computed } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { withLogging } from '../util-logging/store-logging-feature';
 import { withStellarDevtools } from '@hypertheory-labs/stellar-ng-devtools';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs';
 
-type AuthState =
-  | { kind: 'authenticated'; user: { name: string; email: string; roles: string[] } }
-  | { kind: 'unauthenticated' };
+type AuthState = {
+  isAuthenticated: boolean;
+  user: { name: string; email: string; roles: string[] } | undefined;
+};
 
 export const authStore = signalStore(
   withStellarDevtools('auth'),
-  withState<AuthState>({ kind: 'unauthenticated' }),
+  withState<AuthState>({
+    isAuthenticated: false,
+    user: undefined,
+  }),
   withLogging('auth'),
   withReducer(
     on(authActions.login, () => ({
-      kind: 'authenticated',
+      isAuthenticated: true,
       user: { name: 'John Doe', email: 'john.doe@example.com', roles: ['software-center'] },
     })),
-    on(authActions.logout, () => ({ kind: 'unauthenticated' })),
+    on(authActions.logout, () => ({ isAuthenticated: false, user: undefined })),
   ),
   withComputed((state) => ({
-    isAuthenticated: computed(() => state.kind() === 'authenticated'),
     isSoftwareCenterTeamMember: computed(() => {
-      const s = state as { kind: () => string; roles?: () => string[] };
-      return s.kind() === 'authenticated' && (s.roles?.() ?? []).includes('software-center');
+      return state.isAuthenticated()
+        ? state.user()?.roles.some((r) => r === 'software-center')
+        : false;
     }),
     isManager: computed(() => {
-      const s = state as { kind: () => string; roles?: () => string[] };
-      return s.kind() === 'authenticated' && (s.roles?.() ?? []).includes('manager');
+      return state.isAuthenticated() ? state.user()?.roles.some((r) => r === 'manager') : false;
     }),
+  })),
+  withEventHandlers((store, events = inject(Events), router = inject(Router)) => ({
+    logout$: events.on(authActions.logout).pipe(tap(() => router.navigate(['/']))),
   })),
 );
