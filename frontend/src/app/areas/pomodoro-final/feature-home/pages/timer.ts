@@ -6,7 +6,6 @@ import {
   effect,
   inject,
   signal,
-  untracked,
 } from '@angular/core';
 import { PageHeader } from '../../../shared/ui-page-header/page-header';
 
