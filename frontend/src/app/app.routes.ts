@@ -56,6 +56,12 @@ export const routes: AppRoute[] = [
     loadChildren: () =>
       import('./areas/jeff-pomodoro/feature-home/pomodoro.routes').then((r) => r.pomodoroRoutes),
   },
+  {
+    path: 'pomodoro-final',
+    data: { nav: { label: 'Pomodoro Final', icon: 'solarStopwatch' } },
+    loadChildren: () =>
+      import('./areas/pomodoro-final/feature-home/pomodoro.routes').then((m) => m.pomodoroFinalRoutes),
+  },
 
   {
     path: '**',
