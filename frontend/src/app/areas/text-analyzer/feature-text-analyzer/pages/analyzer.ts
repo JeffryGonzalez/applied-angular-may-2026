@@ -55,6 +55,13 @@ import { Component, computed, signal } from '@angular/core';
         </div>
       </div>
     }
+
+    @for (kw of topKeywords(); track kw.word) {
+      <div class="badge badge-outline gap-1">
+        <span class="font-semibold">{{ kw.word }}</span>
+        <span class="opacity-50">×{{ kw.count }}</span>
+      </div>
+    }
   `,
   styles: ``,
 })
@@ -112,4 +119,20 @@ export class Analyzer {
     const rem = secs % 60;
     return rem > 0 ? `${mins}m ${rem}s` : `${mins}m`;
   });
+  private STOP_WORDS = new Set(['the', 'a', 'an', 'and', 'or', 'is', 'are', 'in', 'of', 'to']);
+
+  private wordFrequency = computed(() => {
+    const freq = new Map<string, number>();
+    for (const word of this.words()) {
+      if (this.STOP_WORDS.has(word)) continue;
+      freq.set(word, (freq.get(word) ?? 0) + 1);
+    }
+    return freq;
+  });
+  protected topKeywords = computed(() =>
+    [...this.wordFrequency().entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([word, count]) => ({ word, count })),
+  );
 }
