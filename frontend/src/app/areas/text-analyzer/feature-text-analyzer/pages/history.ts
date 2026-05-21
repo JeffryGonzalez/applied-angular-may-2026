@@ -3,7 +3,7 @@ import { textAnalyzerStore } from '../data/store';
 import { AnalysisSnapshot } from '../data/types';
 import { DatePipe } from '@angular/common';
 
-type SnapshotKey = keyof AnalysisSnapshot; //not sure if I did this right excluding id
+type SnapshotKey = keyof Omit<AnalysisSnapshot, 'id' | 'topKeywords'>;
 @Component({
   selector: 'app-text-analyzer-history',
   imports: [DatePipe],
