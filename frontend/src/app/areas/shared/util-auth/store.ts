@@ -3,22 +3,32 @@ import { on, withReducer } from '@ngrx/signals/events';
 import { authActions } from './actions';
 import { computed } from '@angular/core';
 import { withLogging } from '../util-logging/store-logging-feature';
+import { withStellarDevtools } from '@hypertheory-labs/stellar-ng-devtools';
 
 type AuthState =
-  | { kind: 'authenticated'; user: { name: string; email: string } }
+  | { kind: 'authenticated'; user: { name: string; email: string; roles: string[] } }
   | { kind: 'unauthenticated' };
 
 export const authStore = signalStore(
+  withStellarDevtools('auth'),
   withState<AuthState>({ kind: 'unauthenticated' }),
   withLogging('auth'),
   withReducer(
     on(authActions.login, () => ({
       kind: 'authenticated',
-      user: { name: 'John Doe', email: 'john.doe@example.com' },
+      user: { name: 'John Doe', email: 'john.doe@example.com', roles: ['software-center'] },
     })),
     on(authActions.logout, () => ({ kind: 'unauthenticated' })),
   ),
   withComputed((state) => ({
     isAuthenticated: computed(() => state.kind() === 'authenticated'),
+    isSoftwareCenterTeamMember: computed(() => {
+      const s = state as { kind: () => string; roles?: () => string[] };
+      return s.kind() === 'authenticated' && (s.roles?.() ?? []).includes('software-center');
+    }),
+    isManager: computed(() => {
+      const s = state as { kind: () => string; roles?: () => string[] };
+      return s.kind() === 'authenticated' && (s.roles?.() ?? []).includes('manager');
+    }),
   })),
 );

@@ -3,6 +3,7 @@ import { Admin } from './admin';
 import { OverviewPage } from './pages/overview';
 import { VendorsPage } from './pages/vendors';
 import { ItemsPage } from './pages/items';
+import { AddItemPage } from './pages/add-item';
 import { vendorsStore } from '../data-catalog/vendors-store';
 import { vendorCatalogItemStore } from '../data-catalog/vendor-catalog-item-store';
 import { CatalogApi } from '../data-catalog/catalog-api';
@@ -29,6 +30,11 @@ export const softwareAdminRoutes: Routes = [
             component: ItemsPage,
           },
         ],
+      },
+      {
+        path: 'add-item',
+        component: AddItemPage,
+        data: { nav: { label: 'Add Item' } },
       },
     ],
   },

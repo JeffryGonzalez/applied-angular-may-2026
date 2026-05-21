@@ -17,6 +17,6 @@ export class CatalogApi {
   }
 
   addCatalogItemToVendor(vendorId: string, item: VendorCatalogItemCreate) {
-    return this.#http.post<VendorCatalogItem>(`/api/vendors/${vendorId}items`, item);
+    return this.#http.post<VendorCatalogItem>(`/api/vendors/${vendorId}/items`, item);
   }
 }

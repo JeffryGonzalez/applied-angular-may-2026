@@ -1,17 +1,10 @@
+import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods } from '@ngrx/signals';
-import {
-  addEntities,
-  addEntity,
-  setEntities,
-  withEntities,
-  upsertEntities,
-  removeAllEntities,
-} from '@ngrx/signals/entities';
+import { addEntity, removeAllEntities, setEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CatalogApi, VendorCatalogItem, VendorCatalogItemCreate } from './catalog-api';
-import { inject } from '@angular/core';
 
-import { switchMap, tap, pipe, mergeMap, map } from 'rxjs';
+import { mergeMap, pipe, switchMap, tap } from 'rxjs';
 type CatalogItemRequest = {
   vendorId: string;
   item: VendorCatalogItemCreate;

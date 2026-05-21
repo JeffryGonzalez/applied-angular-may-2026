@@ -63,7 +63,7 @@ interface NavEntry {
                   (click)="onNavClick()"
                 >
                   <ng-icon [name]="item.icon" class="text-xl" />
-                  <span class="is-drawer-close:hidden">{{ item.label }}</span>
+                  <span class="is-drawer-close:hidden">{{ item.label }} </span>
                 </a>
               </li>
             }

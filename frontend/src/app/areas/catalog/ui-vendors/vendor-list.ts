@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-vendors-list',
   imports: [RouterLink],
   template: `
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="flex flex-col gap-4">
       @for (vendor of vendors(); track vendor.id) {
         <div class="card card-border bg-base-100">
           <div class="card-body">

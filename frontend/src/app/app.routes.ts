@@ -1,8 +1,9 @@
 import { Route } from '@angular/router';
 import { IconName } from './areas/shared/util-icons/icons';
+import { softwareCenterTeamMember } from './areas/shared/util-auth/auth-guards';
 
 export interface AppNavData {
-  nav: { label: string; icon: IconName };
+  nav: { label: string; icon: IconName; needsAuth?: boolean };
 }
 
 export type AppRoute = Route & { data?: AppNavData };
@@ -16,7 +17,8 @@ export const routes: AppRoute[] = [
   },
   {
     path: 'admin',
-    data: { nav: { label: 'Software Admin', icon: 'solarSettings' } },
+    canActivate: [softwareCenterTeamMember],
+    data: { nav: { label: 'Software Admin', icon: 'solarSettings', needsAuth: true } },
     loadChildren: () =>
       import('./areas/catalog/feature-admin/admin.routes').then((a) => a.softwareAdminRoutes),
   },
