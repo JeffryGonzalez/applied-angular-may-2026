@@ -11,8 +11,10 @@ Day 3 shifted gears from isolated demos to building a complete, production-shape
 Before diving into the new feature, the instructor reviewed how Angular resolves services and what "scope" and "lifetime" mean in practice. Key points illustrated with the `CounterStore` demo:
 
 - The classic `@Injectable({ providedIn: 'root' })` pattern makes a service a **singleton** for the entire app lifetime.
-- NgRx Signal Stores do not need the decorator -- they can be provided directly in `providers` arrays at the component, route, or application level, giving you precise control over when the store is created and destroyed.
+  > Note by Jeff: This is not a singleton as soon as you provide the service anywhere else. Be careful.
+- Services do not need the decorator -- they can be provided directly in `providers` arrays at the component, route, or application level, giving you precise control over when the store is created and destroyed.
 - `HttpClient` can be injected into both class-based services and Signal Stores via the constructor or `inject()`.
+  - Prefer the `inject()` method - Constructor injection is deprecated.
 
 ---
 
@@ -73,10 +75,11 @@ The page also demonstrated **client-side sorting** using a `signal<Sortkeys>` an
 
 ```ts
 sortingBy = signal<Sortkeys>('title');
-catalogSorted = computed(() =>
-  this.catalogResource.value()?.toSorted((a, b) =>
-    a[this.sortingBy()].localeCompare(b[this.sortingBy()])
-  ) ?? []
+catalogSorted = computed(
+  () =>
+    this.catalogResource
+      .value()
+      ?.toSorted((a, b) => a[this.sortingBy()].localeCompare(b[this.sortingBy()])) ?? [],
 );
 ```
 
@@ -93,7 +96,7 @@ export const vendorsStore = signalStore(
   withEntities<VendorEntity>(),
   withMethods((store) => ({
     _load: async () => {
-      const vendors = await fetch('/api/vendors').then(v => v.json());
+      const vendors = await fetch('/api/vendors').then((v) => v.json());
       patchState(store, setEntities(vendors));
     },
     add: async (item: VendorCreate) => {
@@ -107,12 +110,15 @@ export const vendorsStore = signalStore(
     },
   })),
   withHooks({
-    onInit(store) { store._load(); },
+    onInit(store) {
+      store._load();
+    },
   }),
 );
 ```
 
 **Why this pattern:**
+
 - `withEntities` gives you a normalized entity map with helper updaters like `setEntities` and `addEntity` -- no manual array management.
 - `withHooks` `onInit` auto-loads data when the store is first injected, so components do not need to trigger the fetch manually.
 - The `add` method uses raw `fetch()` (rather than `HttpClient`) to demonstrate that Angular's HTTP layer is not the only option -- especially convenient inside stores.
@@ -148,11 +154,12 @@ vendorForm = form(
         // reset model signal back to empty state
       },
     },
-  }
+  },
 );
 ```
 
 **Key patterns:**
+
 - `form()` takes a signal as its model -- the form and the signal stay in sync automatically.
 - Validators are applied as plain function calls in the schema callback, not as decorators.
 - Cross-field validation (e.g., "must have email OR phone") is expressed with `validate()` on a parent schema node.
@@ -164,8 +171,12 @@ A custom `validateUrl` helper was extracted into `types.ts` to show how to creat
 ```ts
 export function validateUrl(path: SchemaPath<string>, options?: { message: string }) {
   return validate(path, ({ value }) => {
-    try { new URL(value()); return null; }
-    catch { return { kind: 'url', message: options?.message || 'Enter a valid URL' }; }
+    try {
+      new URL(value());
+      return null;
+    } catch {
+      return { kind: 'url', message: options?.message || 'Enter a valid URL' };
+    }
   });
 }
 ```
