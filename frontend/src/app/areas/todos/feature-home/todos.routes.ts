@@ -12,8 +12,8 @@ export const todosRoutes: Routes = [
       {
         path: '',
         loadComponent: () => import('./pages/list').then((m) => m.ListPage),
-        data: { nav: { label: 'List' } },
-      },
+        data: { nav: { label: 'List', parent: 'Todos' } },
+      }
     ],
   },
 ];

@@ -51,6 +51,7 @@ export const todosStore = signalStore(
     },
   })),
   withComputed((store) => ({
+    total: computed(() => store.entities().length),
     remaining: computed(() => store.entities().filter((t) => !t.completed).length),
     completedCount: computed(() => store.entities().filter((t) => t.completed).length),
     allComplete: computed(
