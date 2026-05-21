@@ -56,6 +56,14 @@ export const routes: AppRoute[] = [
     loadChildren: () =>
       import('./areas/jeff-pomodoro/feature-home/pomodoro.routes').then((r) => r.pomodoroRoutes),
   },
+  {
+    path: 'text-analyzer',
+    data: { nav: { label: 'Text Analyzer', icon: 'solarDocument' } },
+    loadChildren: () =>
+      import('./areas/text-analyzer/feature-text-analyzer/text-analyzer.routes').then(
+        (m) => m.TextAnalyzerRoutes,
+      ),
+  },
 
   {
     path: '**',
