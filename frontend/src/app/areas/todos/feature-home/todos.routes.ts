@@ -9,7 +9,11 @@ export const todosRoutes: Routes = [
     providers: [todosStore],
     data: { area: { label: 'Todos' } },
     children: [
-      // list page goes here
+      {
+        path: '',
+        loadComponent: () => import('./pages/list').then((m) => m.ListPage),
+        data: { nav: { label: 'List' } },
+      },
     ],
   },
 ];
